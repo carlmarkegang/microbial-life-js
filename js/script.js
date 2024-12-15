@@ -1,5 +1,4 @@
 let being = [];
-var points = 0;
 let obstacle_array = [];
 let background_blocks_array = [];
 
