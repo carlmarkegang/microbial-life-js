@@ -35,7 +35,7 @@ function create_background_block(x, y, size) {
 for (let i = 0; i < 20; i++) {
   var y = randomInt(0, resolutionY);
   var x = randomInt(0, resolutionX);
-  obstacle_array.push(new create_obstacle(x, y, 10));
+  obstacle_array.push(new create_obstacle(x, y, randomInt(5, 20)));
 }
 
 for (let i = 0; i < 200; i++) {
@@ -57,25 +57,25 @@ function setup() {
 
 function draw() {
 
-  background(color(91, 160, 255));
+  background(color(207, 218, 175));
   stroke(0, 0, 0);
   strokeWeight(0);
 
   // Background blocks
-  fill(color(50, 50, 50));
+  fill(color(100, 115, 53));
   for (let i = 0; i < background_blocks_array.length; i++) {
     rect(background_blocks_array[i].position.x, background_blocks_array[i].position.y, background_blocks_array[i].size, background_blocks_array[i].size);
   }
 
   // Obstacle
-  fill(color(239, 100, 14));
+  fill(color(173, 192, 117));
   for (let i = 0; i < obstacle_array.length; i++) {
     ellipse(obstacle_array[i].position.x, obstacle_array[i].position.y, obstacle_array[i].radius * 2, obstacle_array[i].radius * 2);
     collisionCheck(obstacle_array[i]);
   }
 
   // being
-  fill(color(247, 15, 116));
+  fill(color(100, 115, 53));
   for (let i = 0; i < being.length; i++) {
     beingMovement(being[i]);
     being[i].position.x += being[i].vel_x;
