@@ -18,6 +18,7 @@ function create_being(x, y, vel_x, vel_y) {
   this.accelerationY = 0;
   this.randomMovementX = 0;
   this.randomMovementY = 0;
+  this.eating = false;
 }
 
 function create_obstacle(x, y, radius) {
@@ -37,11 +38,10 @@ for (let i = 0; i < 20; i++) {
   obstacle_array.push(new create_obstacle(x, y, 10));
 }
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 200; i++) {
   var y = randomInt(0, resolutionY);
   var x = randomInt(0, resolutionX);
   background_blocks_array.push(new create_background_block(x, y, 1));
-  background_blocks_array.push(new create_background_block(0, 0, 1));
 }
 
 for (let i = 0; i < 5; i++) {
@@ -106,8 +106,11 @@ function collisionCheck(obstacle) {
       being[i].position.add(shift);
       being[i].vel_x = 0;
       being[i].vel_y = 0;
+      being[i].eating = true;
       obstacle.radius -= 0.5;
+      being[i].eating = false;
       randomMovement(being[i])
+
     }
   }
 }
@@ -189,9 +192,11 @@ function randomMovement(beings) {
 
 setInterval(function () {
   for (let i = 0; i < being.length; i++) {
-    randomMovement(being[i]);
+    if (randomInt(1, 5) === 1) {
+      randomMovement(being[i]);
+    }
   }
-}, 2000);
+}, 200);
 
 for (let i = 0; i < being.length; i++) {
   randomMovement(being[i]);
