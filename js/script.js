@@ -106,10 +106,9 @@ function collisionCheck(obstacle) {
       being[i].position.add(shift);
       being[i].vel_x = 0;
       being[i].vel_y = 0;
-      being[i].eating = true;
-      obstacle.radius -= 0.5;
-      being[i].eating = false;
-      randomMovement(being[i])
+      being[i].eating = obstacle;
+
+
 
     }
   }
@@ -178,6 +177,9 @@ function randomInt(min, max) {
 }
 
 function randomMovement(beings) {
+  if (beings.eating != false) {
+    return;
+  }
   beings.accelerationX = randomInt(0, 10) / 1000;
   beings.accelerationY = randomInt(0, 10) / 1000;
   if (randomInt(1, 2) == 1) {
@@ -189,6 +191,21 @@ function randomMovement(beings) {
   }
 }
 
+function eating() {
+  for (let i = 0; i < being.length; i++) {
+    if (being[i].eating != false) {
+      being[i].eating.radius -= 0.5;
+      being[i].eating = false;
+      randomMovement(being[i]);
+    }
+  }
+}
+
+setInterval(function () {
+  for (let i = 0; i < being.length; i++) {
+    eating();
+  }
+}, 2000);
 
 setInterval(function () {
   for (let i = 0; i < being.length; i++) {
