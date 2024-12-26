@@ -2,6 +2,7 @@ let being = [];
 let obstacle_array = [];
 let background_blocks_array = [];
 
+
 let resolutionX = 300;
 let resolutionY = resolutionX / 1.5;
 
@@ -19,6 +20,9 @@ function create_being(x, y, vel_x, vel_y) {
   this.randomMovementX = 0;
   this.randomMovementY = 0;
   this.eating = false;
+  this.segmentsX = [x,0,0,0,0];
+  this.segmentsY = [y,0,0,0,0];
+  this.segLength  = 5;
 }
 
 function create_obstacle(x, y, radius) {
@@ -83,17 +87,14 @@ function draw() {
 
     ellipse(being[i].position.x, being[i].position.y, being[i].radius * 2, being[i].radius * 2);
 
-    var tailOffsetX_1 = being[i].vel_x;
-    var tailOffsetY_1 = being[i].vel_y;
-    ellipse(being[i].position.x - tailOffsetX_1, being[i].position.y - tailOffsetY_1, being[i].radius * 2, being[i].radius * 2);
+    strokeWeight(4);
+    stroke(255, 100)
 
-    var tailOffsetX_2 = being[i].vel_x * 2;
-    var tailOffsetY_2 = being[i].vel_y * 2;
-    ellipse(being[i].position.x - tailOffsetX_2, being[i].position.y - tailOffsetY_2, being[i].radius * 2, being[i].radius * 2);
+    dragSegment(0, being[i].position.x, being[i].position.y, being[i]);
+    for(var i2=0; i2<being[i].segmentsX.length-1; i2++) {
+      dragSegment(i2+1, being[i].segmentsX[i2], being[i].segmentsY[i2], being[i]);
+    }
 
-    var tailOffsetX_3 = being[i].vel_x * 4;
-    var tailOffsetY_3 = being[i].vel_y * 4;
-    ellipse(being[i].position.x - tailOffsetX_3, being[i].position.y - tailOffsetY_3, being[i].radius * 2, being[i].radius * 2);
   }
 }
 
@@ -107,9 +108,6 @@ function collisionCheck(obstacle) {
       being[i].vel_x = 0;
       being[i].vel_y = 0;
       being[i].eating = obstacle;
-
-
-
     }
   }
 }
@@ -199,6 +197,25 @@ function eating() {
       randomMovement(being[i]);
     }
   }
+}
+
+
+function dragSegment(i, xin, yin, being) {
+  var dx = xin - being.segmentsX[i];
+  var dy = yin - being.segmentsY[i];
+  var angle = atan2(dy, dx);  
+  being.segmentsX[i] = xin - cos(angle) * being.segLength;
+  being.segmentsY[i] = yin - sin(angle) * being.segLength;
+  debugger;
+  segment(being.segmentsX[i], being.segmentsY[i], angle, being.segLength);
+}
+
+function segment(x, y, a, segLength) {
+  push();
+  translate(x, y);
+  rotate(a);
+  line(0, 0, segLength, 0);
+  pop();
 }
 
 setInterval(function () {
